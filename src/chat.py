@@ -27,17 +27,19 @@ DocumentConverter = None
 
 
 def setup_environment():
-    """Load environment variables (keeping for potential future use)."""
+    """Load environment variables."""
     load_dotenv(override=True)
     print("Environment loaded")
 
 
 def setup_client():
     """Setup the Azure AI Inference client pointing at Azure AI Foundry."""
-    # Azure AI Foundry endpoint and credentials (hardcoded)
-    # For Foundry models, use the /models endpoint
-    AZURE_ENDPOINT = "https://vac25-resource.services.ai.azure.com/models"
-    AZURE_API_KEY = "8tucsIQpr1kwg599y2nU8NHOdWaT2Ad1Wpt7tmlISQexDd4qjUM1JQQJ99BKACL93NaXJ3w3AAAAACOGDydw"
+    # Load credentials from environment variables
+    AZURE_ENDPOINT = os.getenv("AZURE_ENDPOINT")
+    AZURE_API_KEY = os.getenv("AZURE_API_KEY")
+    
+    if not AZURE_ENDPOINT or not AZURE_API_KEY:
+        raise ValueError("AZURE_ENDPOINT and AZURE_API_KEY must be set in .env file")
     
     client = ChatCompletionsClient(
         endpoint=AZURE_ENDPOINT,

@@ -3,6 +3,9 @@ __pycache__/
 *.pyc
 .venv/
 
+# Environment variables
+.env
+
 # Artifacts and local data
 artifacts/*
 !artifacts/.gitkeep
