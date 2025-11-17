@@ -27,7 +27,29 @@ DocumentConverter = None
 
 
 def setup_environment():
-    """Load environment variables."""
+    """Load environment variables, create .env if it doesn't exist."""
+    env_path = Path(".env")
+    
+    # Check if .env file exists
+    if not env_path.exists():
+        print("\n.env file not found. Let's set up your Azure AI credentials.\n")
+        
+        # Prompt for credentials
+        endpoint = input("Enter your Azure AI Endpoint (e.g., https://your-endpoint.inference.ai.azure.com): ").strip()
+        api_key = input("Enter your Azure API Key: ").strip()
+        
+        # Validate inputs
+        if not endpoint or not api_key:
+            raise ValueError("Both endpoint and API key are required!")
+        
+        # Create .env file with the credentials
+        with open(env_path, "w") as f:
+            f.write(f"AZURE_ENDPOINT={endpoint}\n")
+            f.write(f"AZURE_API_KEY={api_key}\n")
+        
+        print(f"\n✓ Credentials saved to {env_path.absolute()}")
+        print("You can edit this file later if needed.\n")
+    
     load_dotenv(override=True)
     print("Environment loaded")
 
